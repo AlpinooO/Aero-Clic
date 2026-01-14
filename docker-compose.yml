@@ -1,43 +1,26 @@
 version: '3.8'
 
 services:
-  app:
-    build: .
-    container_name: myapp-${ENVIRONMENT:-dev}
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    container_name: aero-click-frontend
     ports:
-      - "${PORT:-3000}:3000"
-    environment:
-      - ENVIRONMENT=${ENVIRONMENT}
-      - DEBUG=${DEBUG}
-      - LOG_LEVEL=${LOG_LEVEL}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - API_KEY=${API_KEY}
-    env_file:
-      - .env
-    networks:
-      - app-network
-    restart: unless-stopped
-
-  db:
-    image: postgres:15-alpine
-    container_name: db-${ENVIRONMENT:-dev}
-    environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - "${FRONTEND_PORT:-3000}:3000"
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=${API_URL:-http://localhost:5000}
+      - CHOKIDAR_USEPOLLING=true
     networks:
-      - app-network
+      - aero-click-network
     restart: unless-stopped
 
 networks:
-  app-network:
+  aero-click-network:
     driver: bridge
-
-volumes:
-  db-data:
