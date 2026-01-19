@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    container_name: aero-click-frontend
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=${API_URL:-http://localhost:5000}
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - aero-click-network
+    restart: unless-stopped
+
+networks:
+  aero-click-network:
+    driver: bridge
