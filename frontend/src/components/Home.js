@@ -2,6 +2,8 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Home.css';
+import bodybuilderImage from '../images/AIbodybuilder.png';
+import logoImage from '../images/aerologo.png';
 
 function Home() {
   const { user, logout } = useAuth();
@@ -19,9 +21,7 @@ function Home() {
     <div className="home-container">
       <nav className="navbar">
         <div className="logo-container">
-          <span>AÉRO</span>
-          <span style={{ color: '#76ff03' }}>CLIC</span>
-          <span style={{ fontSize: '1.5rem', marginLeft: '5px' }}>🖱️</span>
+          <img src={logoImage} alt="AÉRO CLIC Logo" className="logo-image" />
         </div>
         
         <div className="nav-links">
@@ -58,6 +58,7 @@ function Home() {
           </div>
         </div>
         <div className="hero-image-container">
+          <img src={bodybuilderImage} alt="Bodybuilder" className="hero-bodybuilder-image" />
         </div>
       </div>
 
