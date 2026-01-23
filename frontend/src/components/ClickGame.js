@@ -107,7 +107,7 @@ function ClickGame() {
 
       <div className="game-content">
         <div className="game-header">
-          <h1 className="game-title">Mini-Jeu : Soulevé d'Haltère 💪</h1>
+          <h1 className="game-title">Mini-Jeu : Clic haltère</h1>
           <p className="game-subtitle">
             Clique rapidement pour soulever l'haltère avant la fin du temps !
           </p>
@@ -131,7 +131,7 @@ function ClickGame() {
         <div className="game-area">
           {!isPlaying && !gameOver ? (
             <div className="start-screen">
-              <h2>Prêt à t'entraîner ? 💪</h2>
+              <h2>Prêt à t'entraîner ?</h2>
               <p>Clique sur le bouton pour commencer</p>
               <button className="start-button" onClick={startGame}>
                 Commencer
@@ -139,9 +139,8 @@ function ClickGame() {
               <div className="instructions">
                 <h3>Comment jouer :</h3>
                 <ul>
-                  <li>Chaque niveau dure 3 secondes</li>
                   <li>Clique le nombre de fois requis avant la fin du temps</li>
-                  <li>La difficulté augmente à chaque niveau (+3 clics)</li>
+                  <li>La difficulté augmente à chaque niveau</li>
                   <li>Le jeu se termine si tu ne réussis pas à temps</li>
                   <li>Chaque clic rapporte 10 points</li>
                 </ul>
