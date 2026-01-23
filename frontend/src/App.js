@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './context/AuthContext';
 import Login from './components/Login';
 import Home from './components/Home';
-import MiniGame from './components/MiniGame1';
+import MiniGameLobby from './components/MiniGameLobby';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
-          <Route path="/minigame" element={<MiniGame />} />
+          <Route path="/minigame" element={<MiniGameLobby />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import './MiniGame1.css';
+import './MiniGameLobby.css';
 
-function MiniGame() {
+function MiniGameLobby() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -97,4 +97,4 @@ function MiniGame() {
   );
 }
 
-export default MiniGame;
+export default MiniGameLobby;
