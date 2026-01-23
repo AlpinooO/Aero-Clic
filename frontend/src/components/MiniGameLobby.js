@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import './Home.css';
+import './MiniGameLobby.css';
 
-function Home() {
+function MiniGameLobby() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleAction = () => {
     if (user) {
-      alert(`Prêt à s'entrainer, ${user.username} !`);
+      alert(`Prêt à jouer, ${user.username} !`);
     } else {
       navigate('/login');
     }
@@ -49,12 +49,12 @@ function Home() {
       <div className="hero-section">
         <div className="hero-content">
           <div className="hero-text-box">
-            <h1 className="welcome-text">Bienvenue !</h1>
+            <h1 className="welcome-text">Mini Jeu !</h1>
             <p className="hero-description">
-              Transforme chaque clic en énergie et brûle des calories sans quitter ton écran !
+              Teste tes réflexes et ta précision dans ce mini-jeu de clics !
             </p>
             <p className="hero-description">
-              AÉRO CLIC est un gym virtuel ludique et motivant où tu progresses en cliquant
+              Plus tu cliques vite et précisément, plus tu accumules de points
             </p>
           </div>
         </div>
@@ -62,39 +62,39 @@ function Home() {
         </div>
       </div>
 
-      <div className="features-footer">
-        <div className="features-left">
-          <h2 className="features-title">Pourquoi AÉRO CLIC :</h2>
-          
-          <div className="features-grid">
-            <div className="feature-item">
-              <span className="feature-icon">$</span>
-              <span>Gratuit</span>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">🏃</span>
-              <span>Accessible</span>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">🏋️</span>
-              <span>Efficace</span>
-            </div>
+      <div className="minigames-section">
+        <Link to="/minigame/click" className="game-card">
+          <div className="game-image click-game">
+            <img src="" alt="Clic" />
           </div>
+          <h3 className="game-title">Clic</h3>
+          <p className="game-description">
+            Clique de façon régulière sur la souris en suivant le temps comme un métronome, en frappant la précision.
+          </p>
+        </Link>
+
+        <div className="game-card">
+          <div className="game-image drag-drop-game">
+            <img src="" alt="Drag and Drop" />
+          </div>
+          <h3 className="game-title">Drag and Drop</h3>
+          <p className="game-description">
+            Utilise le drag and drop et dépose-les dans les cases correctes aussi rapidement et précisément que possible.
+          </p>
         </div>
 
-        <div className="cta-card">
-          <p className="cta-text">
-            Que tu sois là pour t'amuser, te challenger ou simplement passer le temps, 
-            chaque action te rapproche de tes objectifs. Plus tu cliques, plus tu gagnes 
-            de points, d'endurance et de performance !
+        <div className="game-card">
+          <div className="game-image osu-game">
+            <img src="" alt="OSU" />
+          </div>
+          <h3 className="game-title">OSU</h3>
+          <p className="game-description">
+            Clique sur les cibles qui apparaissent à l'écran en rythme et avec précision, en suivant la cadence le plus rapidement possible.
           </p>
-          <button className="btn-clic" onClick={handleAction}>
-            CLIC !
-          </button>
         </div>
       </div>
     </div>
   );
 }
 
-export default Home;
+export default MiniGameLobby;
