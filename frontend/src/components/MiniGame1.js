@@ -1,53 +1,96 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './MiniGame1.css';
 
 function MiniGame() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAction = () => {
+    if (user) {
+      alert(`Prêt à jouer, ${user.username} !`);
+    } else {
+      navigate('/login');
+    }
+  };
 
   return (
-    <div className="minigame-container">
+    <div className="home-container">
       <nav className="navbar">
         <div className="logo-container">
-          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <span>AÉRO</span>
-            <span style={{ color: '#76ff03' }}>CLIC</span>
-            <span style={{ fontSize: '1.5rem', marginLeft: '5px' }}>🖱️</span>
-          </Link>
+          <span>AÉRO</span>
+          <span style={{ color: '#76ff03' }}>CLIC</span>
+          <span style={{ fontSize: '1.5rem', marginLeft: '5px' }}>🖱️</span>
         </div>
         
         <div className="nav-links">
           <Link to="/" className="nav-link">Accueil</Link>
-          <Link to="/minigame" className="nav-link active">Mini Jeu</Link>
+          <span className="nav-link" onClick={handleAction}>S'entrainer</span>
+          <Link to="/minigame" className="nav-link">Minijeux</Link>
           <span className="nav-link">Profil</span>
+          
+          {user ? (
+            <button 
+              onClick={logout} 
+              className="btn-primary" 
+              style={{ backgroundColor: '#d32f2f' }}
+            >
+              Se déconnecter
+            </button>
+          ) : (
+            <Link to="/login" className="btn-primary">
+              Se connecter
+            </Link>
+          )}
         </div>
       </nav>
 
-      <div className="minigame-content">
-        <div className="minigame-header">
-          <h1>🎮 Mini Jeu</h1>
-          {user && <p className="welcome-message">Bienvenue, {user.username} !</p>}
+      <div className="hero-section">
+        <div className="hero-content">
+          <div className="hero-text-box">
+            <h1 className="welcome-text">Mini Jeu !</h1>
+            <p className="hero-description">
+              Teste tes réflexes et ta précision dans ce mini-jeu de clics !
+            </p>
+            <p className="hero-description">
+              Plus tu cliques vite et précisément, plus tu accumules de points
+            </p>
+          </div>
+        </div>
+        <div className="hero-image-container">
+        </div>
+      </div>
+
+      <div className="minigames-section">
+        <div className="game-card">
+          <div className="game-image click-game">
+            <img src="" alt="Clic" />
+          </div>
+          <h3 className="game-title">Clic</h3>
+          <p className="game-description">
+            Clique de façon régulière sur la souris en suivant le temps comme un métronome, en frappant la précision.
+          </p>
         </div>
 
-        <div className="game-placeholder">
-          <div className="placeholder-icon">🎯</div>
-          <h2>Zone de jeu</h2>
-          <p>Le mini jeu sera ajouté ici prochainement...</p>
-          <div className="placeholder-features">
-            <div className="feature-item">
-              <span className="feature-icon">⚡</span>
-              <span>Entraînement rapide</span>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">🏆</span>
-              <span>Scores et classements</span>
-            </div>
-            <div className="feature-item">
-              <span className="feature-icon">🎨</span>
-              <span>Interface interactive</span>
-            </div>
+        <div className="game-card">
+          <div className="game-image drag-drop-game">
+            <img src="" alt="Drag and Drop" />
           </div>
+          <h3 className="game-title">Drag and Drop</h3>
+          <p className="game-description">
+            Utilise le drag and drop et dépose-les dans les cases correctes aussi rapidement et précisément que possible.
+          </p>
+        </div>
+
+        <div className="game-card">
+          <div className="game-image osu-game">
+            <img src="" alt="OSU" />
+          </div>
+          <h3 className="game-title">OSU</h3>
+          <p className="game-description">
+            Clique sur les cibles qui apparaissent à l'écran en rythme et avec précision, en suivant la cadence le plus rapidement possible.
+          </p>
         </div>
       </div>
     </div>
