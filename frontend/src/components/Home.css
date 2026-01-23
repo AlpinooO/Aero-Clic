@@ -78,10 +78,9 @@
 
 .hero-section {
   display: flex;
-  flex: 1;
   position: relative;
   overflow: hidden;
-  min-height: 600px;
+  height: 50vh;
 }
 
 .hero-content {
@@ -143,10 +142,22 @@
   justify-content: space-between;
   align-items: center;
   position: relative;
+  height: 40vh;
 }
 
 .features-left {
   flex: 1;
+  max-width: 50vw;
+}
+
+.features-description {
+  color: var(--text-white);
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+  color: #e0e0e0;
+
 }
 
 .features-title {
@@ -180,17 +191,25 @@
   padding: 2rem;
   padding-bottom: 3rem;
   border-radius: 8px;
-  max-width: 400px;
+  width: 25vw;
+  height: 45vh;
   position: absolute;
   right: 3rem;
   bottom: 2rem;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .cta-text {
   margin-bottom: 1.5rem;
   line-height: 1.5;
   color: #444;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  text-align: center;
 }
 
 .btn-clic {
@@ -204,7 +223,6 @@
   border-radius: 4px;
   cursor: pointer;
   position: absolute;
-  bottom: -1.5rem;
   left: 50%;
   transform: translateX(-50%);
   box-shadow: 0 4px 10px rgba(118, 255, 3, 0.4);
@@ -213,4 +231,67 @@
 
 .btn-clic:hover {
   transform: translateX(-50%) scale(1.05);
+}
+
+.game-description {
+  background-color: #333;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 5vw;
+}
+
+.game-description-grid{
+  display:flex;
+  flex-direction: row;
+  gap: 2rem;
+  width: 100%;
+  max-width: 100%;
+  justify-content: center;
+}
+
+.game-description-item{
+  background-color: white;
+  color: #333;
+  padding: 2rem;
+  border-radius: 8px;
+  flex: 1;
+  max-width: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-description-title {
+  color: var(--primary-purple);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  margin-top: 2vw;
+}
+
+.game-description-description {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #444;
+}
+
+.footer {
+  background-color: #ffffff;
+  color: #333;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 5vw;
+}
+
+.footer-grid {
+  
+  display:flex;
+  flex-direction: row;
+  gap: 8rem;
+  padding-bottom: 5rem;
 }
