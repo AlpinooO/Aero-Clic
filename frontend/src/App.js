@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import Login from './components/Login';
 import Home from './components/Home';
 import MiniGameLobby from './components/MiniGameLobby';
+import ClickGame from './components/ClickGame';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -15,6 +16,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/minigame" element={<MiniGameLobby />} />
+          <Route path="/minigame/click" element={<ClickGame />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

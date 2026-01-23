@@ -63,7 +63,7 @@ function MiniGameLobby() {
       </div>
 
       <div className="minigames-section">
-        <div className="game-card">
+        <Link to="/minigame/click" className="game-card">
           <div className="game-image click-game">
             <img src="" alt="Clic" />
           </div>
@@ -71,7 +71,7 @@ function MiniGameLobby() {
           <p className="game-description">
             Clique de façon régulière sur la souris en suivant le temps comme un métronome, en frappant la précision.
           </p>
-        </div>
+        </Link>
 
         <div className="game-card">
           <div className="game-image drag-drop-game">
