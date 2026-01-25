@@ -1,4 +1,4 @@
-# Aero Clic 💪
+# Aero Click 
 
 Application web de salle de gym virtuelle avec mini-jeux interactifs, développée avec une architecture Docker multi-tiers. 
 Les utilisateurs peuvent s'entraîner virtuellement à travers différents exercices gamifiés et suivre leurs performances.

@@ -79,15 +79,17 @@
   text-align: center;
   margin-top: 1.5rem;
   color: #666;
-  font-size: 14px;
+  font-size: 0.95rem;
 }
 
 .register-link a {
   color: #667eea;
   text-decoration: none;
   font-weight: 600;
+  transition: color 0.3s ease;
 }
 
 .register-link a:hover {
+  color: #764ba2;
   text-decoration: underline;
 }

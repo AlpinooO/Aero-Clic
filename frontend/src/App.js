@@ -8,7 +8,7 @@ import MiniGameLobby from './components/MiniGameLobby';
 import ClickGame from './components/ClickGame';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
-
+import Dashboard from './components/Dashboard';
 function App() {
   return (
     <AuthProvider>
@@ -17,8 +17,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/minigame" element={<MiniGameLobby />} />
-          <Route path="/clickgame" element={<ClickGame />} />
+          <Route path="/minigame/click" element={<ClickGame />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
