@@ -91,21 +91,20 @@ router.get('/leaderboard', async (req, res) => {
 // Submit new score
 router.post('/', async (req, res) => {
   try {
-    const { score, level } = req.body;
+    const { score, gameId = 1 } = req.body;
     const userId = req.headers['x-user-id'];
-    const username = req.headers['x-username'];
 
-    if (!userId || !username) {
+    if (!userId) {
       return res.status(401).json({ error: 'User authentication required' });
     }
 
-    if (score === undefined || level === undefined) {
-      return res.status(400).json({ error: 'Score and level are required' });
+    if (score === undefined) {
+      return res.status(400).json({ error: 'Score is required' });
     }
 
     const [result] = await db.query(
-      'INSERT INTO scores (user_id, username, score, level) VALUES (?, ?, ?, ?)',
-      [userId, username, score, level]
+      'INSERT INTO scores (user_id, game_id, score) VALUES (?, ?, ?)',
+      [userId, gameId, score]
     );
 
     // Invalidate cache
@@ -120,7 +119,7 @@ router.post('/', async (req, res) => {
       message: 'Score submitted successfully',
       scoreId: result.insertId,
       score,
-      level
+      gameId
     });
   } catch (error) {
     console.error('Submit score error:', error);
@@ -138,13 +137,13 @@ router.get('/personal-best', async (req, res) => {
     }
 
     const [result] = await db.query(
-      'SELECT MAX(score) as best_score, MAX(level) as max_level FROM scores WHERE user_id = ?',
+      'SELECT MAX(score) as bestScore, COUNT(id) as gamesPlayed FROM scores WHERE user_id = ?',
       [userId]
     );
 
     res.json({
-      bestScore: result[0].best_score || 0,
-      maxLevel: result[0].max_level || 0
+      bestScore: result[0].bestScore || 0,
+      gamesPlayed: result[0].gamesPlayed || 0
     });
   } catch (error) {
     console.error('Get personal best error:', error);

@@ -1,16 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import scoreService from '../services/score.service';
 import styles from './Dashboard.module.css';
 import './Navbar.css';
 import logoImage from '../images/aerologo.png';
 import { Link } from 'react-router-dom';
 import avatarImage from '../images/avatar.png';
+
 function Dashboard() {
-    const { user, logout } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('Calories');
   const [selectedTimeframe, setSelectedTimeframe] = useState('Année');
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [personalBest, setPersonalBest] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Récupérer le leaderboard
+        const leaderboardData = await scoreService.getLeaderboard(10);
+        setLeaderboard(leaderboardData);
+
+        // Récupérer les meilleurs scores personnels si connecté
+        if (user) {
+          const personalData = await scoreService.getPersonalBest();
+          setPersonalBest(personalData);
+        }
+      } catch (error) {
+        console.error('Failed to fetch dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [user]);
 
   const handleAction = () => {
     if (user) {
@@ -29,8 +56,9 @@ function Dashboard() {
         
         <div className="nav-links">
           <Link to="/" className="nav-link">Accueil</Link>
-          <span className="nav-link" onClick={handleAction}>S'entrainer</span>
-          <Link to="/dashboard" className="nav-link">Dashboard</Link>
+          <Link to="/minigame" className="nav-link">Mini-jeux</Link>
+          <Link to="/leaderboard" className="nav-link">Classement</Link>
+          {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
           
           {user ? (
             <button 
@@ -54,24 +82,23 @@ function Dashboard() {
         </div>
         <div className={styles['counters']}>
             <div className={styles['counter-item']}>
-                <h3>Calories brulées</h3>
-                <p>315 cal</p>
+                <h3>Meilleur score</h3>
+                <p>{personalBest?.bestScore || 0}</p>
             </div>
             <div className={styles['counter-item']}>
-                <h3>Nombre total d'actions</h3>
-                <p>111 000</p>
+                <h3>Parties jouées</h3>
+                <p>{personalBest?.gamesPlayed || 0}</p>
             </div>
             <div className={styles['counter-item']}>
-                <h3>Niveau actuel</h3>
-                <p>beignet</p>
+                <h3>Rang dans le classement</h3>
+                <p>{leaderboard.findIndex(entry => entry.username === user?.username) + 1 || '-'}</p>
             </div>
             <div className={styles['counter-item']}>
-                <h3>Niveau suivant</h3>
-                <div className={styles['progress-bar-container']}>
-                    <div className={styles['progress-bar']} style={{ width: '60%' }}></div>
-                </div>
+                <h3>Score moyen</h3>
+                <p>{personalBest?.gamesPlayed > 0 ? Math.round((personalBest?.bestScore || 0) / personalBest.gamesPlayed) : 0}</p>
             </div>
         </div>
+
         <div className={styles['graph']}>
           <div className={styles['graph-controls']}>
             <div className={styles['category-buttons']}>
