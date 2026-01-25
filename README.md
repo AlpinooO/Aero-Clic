@@ -60,7 +60,7 @@ L'application utilise une architecture en 5 tiers pour une scalabilité optimale
 
 2. **Démarrer l'application**
    ```bash
-   docker-compose up -d --build
+   docker compose up -d --build
    ```
 
 3. **Accéder à l'application**
@@ -193,28 +193,28 @@ games (
 
 ```bash
 # Démarrer tous les services
-docker-compose up -d --build
+docker compose up -d --build
 
 # Voir les logs
-docker-compose logs -f
+docker compose logs -f
 
 # Arrêter tous les services
-docker-compose down
+docker compose down
 
 # Arrêter et supprimer les volumes (réinitialise la DB)
-docker-compose down -v
+docker compose down -v
 ```
 
 ### Débogage
 
 ```bash
 # Vérifier l'état des conteneurs
-docker-compose ps
+docker compose ps
 
 # Voir les logs d'un service spécifique
-docker-compose logs -f frontend
-docker-compose logs -f api-gateway
-docker-compose logs -f business-api
+docker compose logs -f frontend
+docker compose logs -f api-gateway
+docker compose logs -f business-api
 
 # Accéder à la base de données
 docker exec -it aero-click-database mysql -u root -prootpassword
@@ -261,7 +261,7 @@ POST   /api/game/end           - Terminer une session (authentifié)
 ## 🚀 Production
 
 ```bash
-docker-compose -f docker-compose.prod.yml up -d --build
+docker compose -f docker-compose.prod.yml up -d --build
 ```
 
 Accès sur http://localhost:80
