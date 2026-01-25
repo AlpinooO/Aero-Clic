@@ -80,47 +80,22 @@ cp .env.example .env
 
 Key variables:
 - `FRONTEND_PORT`: Port for frontend (default: 3000)
-- `API_URL`: Backend API URL (for future use)
+- `API_GATEWAY_PORT`: Port for API Gateway (default: 5000)
+- `BUSINESS_API_PORT`: Port for Business API (default: 5001)
+- `DB_NAME`: Database name (default: aeroclic)
+- `DB_PASSWORD`: MySQL root password
+- `JWT_SECRET`: Secret key for JWT tokens
+- `REDIS_PORT`: Redis cache port (default: 6379)
 
-## 📦 Adding New Services
+## 🗄️ Base de données
 
-The setup is designed to easily add more services. Here's how:
+L'application utilise MySQL 8.0 avec les tables suivantes :
 
-### 1. Adding a Backend Service
+- **users** : Stockage sécurisé des utilisateurs (id, username, password hashé)
+- **scores** : Enregistrement des performances (user_id, game_id, score)
+- **games** : Liste des mini-jeux disponibles
 
-Uncomment the backend service in `docker-compose.yml`:
-
-```yaml
-backend:
-  build:
-    context: ./backend
-    dockerfile: Dockerfile
-  container_name: aero-click-backend
-  ports:
-    - "${BACKEND_PORT:-5000}:5000"
-  # ... rest of configuration
-```
-
-### 2. Adding a Database
-
-Uncomment the database service in `docker-compose.yml`:
-
-```yaml
-database:
-  image: postgres:15-alpine
-  container_name: aero-click-db
-  # ... rest of configuration
-```
-
-Don't forget to uncomment the volume definition at the bottom!
-
-### 3. Creating Service Directories
-
-```bash
-mkdir backend
-cd backend
-# Add your backend code and Dockerfile
-```
+Le fichier `init.sql` crée automatiquement ces tables au premier démarrage.
 
 ## 🛠️ Common Commands
 
@@ -189,15 +164,34 @@ docker image prune
 2. Rebuild images: `docker-compose up --build`
 3. Check for port conflicts in `.env`
 
-## 🎯 Next Steps
+### Database connection issues?
 
-- [ ] Add backend service (Node.js, Python, etc.)
-- [ ] Add database (PostgreSQL, MongoDB, etc.)
-- [ ] Add authentication service
-- [ ] Add API gateway/reverse proxy
-- [ ] Set up CI/CD pipeline
-- [ ] Add monitoring (Prometheus, Grafana)
-- [ ] Add logging service (ELK stack)
+1. Wait for database health check: `docker-compose logs database`
+2. Verify credentials in `.env` file
+3. Check if init.sql executed: `docker exec -it aero-click-database mysql -uroot -p -e "USE aeroclic; SHOW TABLES;"`
+
+## 🎮 API Endpoints
+
+### Authentication (API Gateway - Port 5000)
+- `POST /api/auth/register` - Créer un compte
+- `POST /api/auth/login` - Se connecter
+- `POST /api/auth/logout` - Se déconnecter
+- `GET /api/auth/me` - Obtenir le profil
+
+### Scores (Business API - Port 5001)
+- `GET /scores` - Récupérer les scores
+- Passwords are hashed with bcrypt for security
+- Redis cache improves leaderboard performance
+- MySQL health checks ensure database is ready before API starts
+- `GET /scores/leaderboard` - Classement général
+- `GET /scores/personal-best` - Records personnels
+- `POST /scores` - Enregistrer un score
+
+### Game Sessions (Business API - Port 5001)
+- `POST /game/start` - Démarrer une session
+- `POST /game/update` - Mettre à jour la progression
+- `GET /game/session` - Session active
+- `POST /game/end` - Terminer la session
 
 ## 📝 Notes
 
@@ -216,7 +210,7 @@ docker image prune
 ## 📄 License
 
 [Your License Here]
-
+Développé pour les passionnés de fitness virtuel 💪
 ---
 
 Built with ❤️ for aviation enthusiasts

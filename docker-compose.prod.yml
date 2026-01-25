@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Tier 1 - Frontend
   frontend:
