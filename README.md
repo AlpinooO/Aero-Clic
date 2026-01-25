@@ -158,10 +158,10 @@ games (
 
 ### Données de test
 
-3 utilisateurs de test sont créés automatiquement :
-- **admin** / password123
-- **athlete1** / password123
-- **champion** / password123
+3 utilisateurs de test sont créés automatiquement avec des mots de passe hashés avec bcrypt (voir le script `init.sql`) :
+- **admin**
+- **athlete1**
+- **champion**
 
 ## 🎮 Fonctionnalités
 
