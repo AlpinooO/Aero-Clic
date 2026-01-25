@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import scoreService from '../services/score.service';
-import './ClickGame.css';
 import styles from './ClickGame.module.css';
 import './Navbar.css';
 import logoImage from '../images/aerologo.png';
