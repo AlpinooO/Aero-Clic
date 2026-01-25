@@ -78,7 +78,7 @@ function ClickGame() {
     // Enregistrer le score final dans la BDD
     if (user && totalScore > 0) {
       try {
-        await scoreService.submitScore(1, totalScore, level);
+        await scoreService.submitScore(1, totalScore);
         await scoreService.endGameSession();
         console.log('Score enregistré avec succès!');
       } catch (error) {
