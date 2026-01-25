@@ -13,6 +13,7 @@ function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
   const [limit, setLimit] = useState(50);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -28,7 +29,18 @@ function Leaderboard() {
     };
 
     fetchLeaderboard();
-  }, [limit]);
+
+    // Auto-refresh every 5 seconds to catch new scores quickly
+    const interval = setInterval(() => {
+      setRefreshKey(prev => prev + 1);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [limit, refreshKey]);
+
+  const handleRefresh = () => {
+    setRefreshKey(prev => prev + 1);
+  };
 
   const handleLogout = async () => {
     await logout();
@@ -78,6 +90,13 @@ function Leaderboard() {
               <option value={100}>Top 100</option>
             </select>
           </label>
+          <button 
+            onClick={handleRefresh} 
+            className={styles['refresh-button']}
+            disabled={loading}
+          >
+            🔄 Actualiser
+          </button>
         </div>
 
         {loading ? (

@@ -20,6 +20,11 @@ function MiniGameLobby() {
     }
   };
 
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
+  };
+
   return (
     <div className={styles.homeContainer}>
       <nav className="navbar">

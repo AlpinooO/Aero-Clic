@@ -28,6 +28,8 @@
 .controls {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 20px;
   margin-bottom: 25px;
 }
 
@@ -48,6 +50,33 @@
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s;
+}
+
+.refresh-button {
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: 2px solid rgba(118, 255, 3, 0.5);
+  background: rgba(118, 255, 3, 0.1);
+  color: #76ff03;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.refresh-button:hover:not(:disabled) {
+  background: rgba(118, 255, 3, 0.2);
+  border-color: #76ff03;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(118, 255, 3, 0.3);
+}
+
+.refresh-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .controls select:hover {
