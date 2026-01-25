@@ -67,11 +67,12 @@ router.get('/leaderboard', async (req, res) => {
     }
 
     const [leaderboard] = await db.query(
-      `SELECT username, MAX(score) as best_score, MAX(level) as max_level, 
-              COUNT(*) as games_played
-       FROM scores 
-       GROUP BY user_id, username 
-       ORDER BY best_score DESC 
+      `SELECT u.username, MAX(s.score) AS best_score,
+              COUNT(*) AS games_played
+       FROM scores s
+       JOIN users u ON s.user_id = u.id
+       GROUP BY s.user_id, u.username
+       ORDER BY best_score DESC
        LIMIT ?`,
       [parseInt(limit)]
     );
