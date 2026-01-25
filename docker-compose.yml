@@ -1,6 +1,5 @@
-version: '3.8'
-
 services:
+  # Tier 1 - Frontend
   frontend:
     build:
       context: ./frontend
@@ -15,12 +14,111 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
-      - REACT_APP_API_URL=${API_URL:-http://localhost:5000}
+      - REACT_APP_API_URL=http://localhost:5000
       - CHOKIDAR_USEPOLLING=true
     networks:
       - aero-click-network
+    depends_on:
+      - api-gateway
     restart: unless-stopped
+
+  # Tier 2 - API Gateway / Authentication
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: aero-click-api-gateway
+    ports:
+      - "${API_GATEWAY_PORT:-5000}:5000"
+    environment:
+      - NODE_ENV=development
+      - JWT_SECRET=${JWT_SECRET:-dev-secret-change-in-production}
+      - DB_HOST=database
+      - DB_PORT=3306
+      - DB_NAME=${DB_NAME:-aeroclic}
+      - DB_USER=${DB_USER:-root}
+      - DB_PASSWORD=${DB_PASSWORD:-rootpassword}
+      - BUSINESS_API_URL=http://business-api:5001
+    networks:
+      - aero-click-network
+    depends_on:
+      database:
+        condition: service_healthy
+      business-api:
+        condition: service_started
+    restart: unless-stopped
+
+  # Tier 3 - Business API (Métier)
+  business-api:
+    build:
+      context: ./business-api
+      dockerfile: Dockerfile
+    container_name: aero-click-business-api
+    ports:
+      - "${BUSINESS_API_PORT:-5001}:5001"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=database
+      - DB_PORT=3306
+      - DB_NAME=${DB_NAME:-aeroclic}
+      - DB_USER=${DB_USER:-root}
+      - DB_PASSWORD=${DB_PASSWORD:-rootpassword}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    networks:
+      - aero-click-network
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+
+  # Tier 4 - Base de données MySQL
+  database:
+    image: mysql:8.0
+    container_name: aero-click-database
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-rootpassword}
+      - MYSQL_DATABASE=${DB_NAME:-aeroclic}
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - aero-click-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-rootpassword}"]
+      timeout: 20s
+      retries: 10
+      interval: 5s
+
+  # Tier 5 (Bonus) - Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: aero-click-redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - aero-click-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      timeout: 3s
+      retries: 5
+      interval: 5s
 
 networks:
   aero-click-network:
     driver: bridge
+
+volumes:
+  db-data:
+    driver: local
+  redis-data:
+    driver: local
