@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import './MiniGameLobby.css';
+import styles from './MiniGameLobby.module.css';
 import './Navbar.css';
+import beatpulseImage from '../images/beatpulse.jpeg';
+import griprushImage from '../images/griprush.jpeg';
+import clickstormImage from '../images/clickstorm.jpeg';
 import logoImage from '../images/aerologo.png';
 
 function MiniGameLobby() {
@@ -23,78 +26,65 @@ function MiniGameLobby() {
   };
 
   return (
-    <div className="home-container">
+    <div className={styles.homeContainer}>
       <nav className="navbar">
         <div className="logo-container">
           <img src={logoImage} alt="AÉRO CLIC Logo" className="logo-image" />
         </div>
         
-        <div className="nav-links">
-          <Link to="/" className="nav-link">Accueil</Link>
-          <Link to="/minigame" className="nav-link">Mini-jeux</Link>
-          <Link to="/leaderboard" className="nav-link">Classement</Link>
-          {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
-          
-          {user ? (
-            <button 
-              onClick={handleLogout} 
-              className="btn-primary" 
-              style={{ backgroundColor: '#d32f2f' }}
-            >
-              Se déconnecter
-            </button>
-          ) : (
-            <Link to="/login" className="btn-primary">
-              Se connecter
-            </Link>
-          )}
-        </div>
+                <div className="nav-links">
+                  <Link to="/" className="nav-link">Accueil</Link>
+                  <Link to="/minigame" className="nav-link">Mini-jeux</Link>
+                  <Link to="/leaderboard" className="nav-link">Classement</Link>
+                  {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
+                  
+                  {user ? (
+                    <button 
+                      onClick={logout} 
+                      className="btn-primary" 
+                      style={{ backgroundColor: '#d32f2f' }}
+                    >
+                      Se déconnecter
+                    </button>
+                  ) : (
+                    <Link to="/login" className="btn-primary">
+                      Se connecter
+                    </Link>
+                  )}
+                </div>
       </nav>
 
-      <div className="hero-section">
-        <div className="hero-content">
-          <div className="hero-text-box">
-            <h1 className="welcome-text">Mini Jeu !</h1>
-            <p className="hero-description">
-              Teste tes réflexes et ta précision dans ce mini-jeu de clics !
-            </p>
-            <p className="hero-description">
-              Plus tu cliques vite et précisément, plus tu accumules de points
-            </p>
-          </div>
-        </div>
-        <div className="hero-image-container">
-        </div>
+      <div className={styles.heroSection}>
       </div>
 
-      <div className="minigames-section">
-        <Link to="/minigame/click" className="game-card">
-          <div className="game-image click-game">
-            <img src="" alt="Clic" />
+      <div className={styles.minigamesSection}>
+        <Link to="/minigame/click" className={styles.gameCard}>
+          <div className={`${styles.gameImage} ${styles.clickGame}`}>
+            <img src={clickstormImage} alt="Clic" />
           </div>
-          <h3 className="game-title">Clic</h3>
-          <p className="game-description">
-            Clique de façon régulière sur la souris en suivant le temps comme un métronome, en frappant la précision.
+          <h3 className={styles.gameTitle}>ClickStorm</h3>
+          <p className={styles.gameDescription}>
+            Clique le plus vite possible pour améliorer tes réflexes et brûler un maximum de calories.
           </p>
         </Link>
 
-        <div className="game-card">
-          <div className="game-image drag-drop-game">
-            <img src="" alt="Drag and Drop" />
+        <Link to="/minigame/griprush" className={styles.gameCard}>
+          <div className={`${styles.gameImage} ${styles.dragDropGame}`}>
+            <img src={griprushImage} alt="GripRush" />
           </div>
-          <h3 className="game-title">Drag and Drop</h3>
-          <p className="game-description">
-            Utilise le drag and drop et dépose-les dans les cases correctes aussi rapidement et précisément que possible.
+          <h3 className={styles.gameTitle}>GripRush</h3>
+          <p className={styles.gameDescription}>
+            Déplace rapidement les éléments pour travailler ta précision et ta coordination.
           </p>
-        </div>
+        </Link>
 
-        <div className="game-card">
-          <div className="game-image osu-game">
-            <img src="" alt="OSU" />
+        <div className={styles.gameCard}>
+          <div className={`${styles.gameImage} ${styles.osuGame}`}>
+            <img src={beatpulseImage} alt="BeatPulse" />
           </div>
-          <h3 className="game-title">OSU</h3>
-          <p className="game-description">
-            Clique sur les cibles qui apparaissent à l'écran en rythme et avec précision, en suivant la cadence le plus rapidement possible.
+          <h3 className={styles.gameTitle}>BeatPulse</h3>
+          <p className={styles.gameDescription}>
+            Suis le rythme et touche les cibles pour tester ta concentration et ton endurance.
           </p>
         </div>
       </div>

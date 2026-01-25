@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import scoreService from '../services/score.service';
-import './ClickGame.css';
+import styles from './ClickGame.module.css';
+import './Navbar.css';
+import logoImage from '../images/aerologo.png';
 
 function ClickGame() {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [isPlaying, setIsPlaying] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [level, setLevel] = useState(1);
@@ -92,21 +95,29 @@ function ClickGame() {
     setClicks(prev => prev + 1);
   };
 
+  const handleAction = () => {
+    if (user) {
+      alert(`Prêt à s'entrainer, ${user.username} !`);
+    } else {
+      navigate('/login');
+    }
+  };
+
   const getProgress = () => {
     return Math.min((clicks / clicksRequired) * 100, 100);
   };
 
   return (
-    <div className="game-container">
+    <div className={styles['game-container']}>
       <nav className="navbar">
         <div className="logo-container">
-          <span>AÉRO</span>
-          <span style={{ color: '#76ff03' }}>CLIC</span>
-          <span style={{ fontSize: '1.5rem', marginLeft: '5px' }}>🖱️</span>
+          <img src={logoImage} alt="AÉRO CLIC Logo" className="logo-image" />
         </div>
         
         <div className="nav-links">
           <Link to="/" className="nav-link">Accueil</Link>
+          <span className="nav-link" onClick={handleAction}>S'entrainer</span>
+          <Link to="/dashboard" className="nav-link">Dashboard</Link>
           <Link to="/minigame" className="nav-link">Minijeux</Link>
           {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
           
@@ -126,38 +137,38 @@ function ClickGame() {
         </div>
       </nav>
 
-      <div className="game-content">
-        <div className="game-header">
-          <h1 className="game-title">Mini-Jeu : Clic haltère</h1>
-          <p className="game-subtitle">
+      <div className={styles['game-content']}>
+        <div className={styles['game-header']}>
+          <h1 className={styles['game-title']}>Mini-Jeu : Clic haltère</h1>
+          <p className={styles['game-subtitle']}>
             Clique rapidement pour soulever l'haltère avant la fin du temps !
           </p>
         </div>
 
-        <div className="game-stats">
-          <div className="stat-box">
-            <span className="stat-label">Niveau</span>
-            <span className="stat-value">{level}</span>
+        <div className={styles['game-stats']}>
+          <div className={styles['stat-box']}>
+            <span className={styles['stat-label']}>Niveau</span>
+            <span className={styles['stat-value']}>{level}</span>
           </div>
-          <div className="stat-box">
-            <span className="stat-label">Temps</span>
-            <span className="stat-value">{timeLeft}s</span>
+          <div className={styles['stat-box']}>
+            <span className={styles['stat-label']}>Temps</span>
+            <span className={styles['stat-value']}>{timeLeft}s</span>
           </div>
-          <div className="stat-box">
-            <span className="stat-label">Score</span>
-            <span className="stat-value">{totalScore}</span>
+          <div className={styles['stat-box']}>
+            <span className={styles['stat-label']}>Score</span>
+            <span className={styles['stat-value']}>{totalScore}</span>
           </div>
         </div>
 
-        <div className="game-area">
+        <div className={styles['game-area']}>
           {!isPlaying && !gameOver ? (
-            <div className="start-screen">
+            <div className={styles['start-screen']}>
               <h2>Prêt à t'entraîner ?</h2>
               <p>Clique sur le bouton pour commencer</p>
-              <button className="start-button" onClick={startGame}>
+              <button className={styles['start-button']} onClick={startGame}>
                 Commencer
               </button>
-              <div className="instructions">
+              <div className={styles.instructions}>
                 <h3>Comment jouer :</h3>
                 <ul>
                   <li>Clique le nombre de fois requis avant la fin du temps</li>
@@ -168,52 +179,52 @@ function ClickGame() {
               </div>
             </div>
           ) : gameOver ? (
-            <div className="start-screen">
+            <div className={styles['start-screen']}>
               <h2>Partie terminée ! 🏆</h2>
-              <div className="final-stats">
-                <div className="final-stat">
-                  <span className="final-label">Niveau atteint</span>
-                  <span className="final-value">{level}</span>
+              <div className={styles['final-stats']}>
+                <div className={styles['final-stat']}>
+                  <span className={styles['final-label']}>Niveau atteint</span>
+                  <span className={styles['final-value']}>{level}</span>
                 </div>
-                <div className="final-stat">
-                  <span className="final-label">Score final</span>
-                  <span className="final-value">{totalScore}</span>
+                <div className={styles['final-stat']}>
+                  <span className={styles['final-label']}>Score final</span>
+                  <span className={styles['final-value']}>{totalScore}</span>
                 </div>
-                <div className="final-stat">
-                  <span className="final-label">Derniers clics</span>
-                  <span className="final-value">{clicks}/{clicksRequired}</span>
+                <div className={styles['final-stat']}>
+                  <span className={styles['final-label']}>Derniers clics</span>
+                  <span className={styles['final-value']}>{clicks}/{clicksRequired}</span>
                 </div>
               </div>
-              <button className="start-button" onClick={startGame}>
+              <button className={styles['start-button']} onClick={startGame}>
                 Rejouer
               </button>
             </div>
           ) : (
-            <div className="play-screen">
-              <div className="level-info">
+            <div className={styles['play-screen']}>
+              <div className={styles['level-info']}>
                 <h2>Niveau {level}</h2>
-                <p className="clicks-required">
-                  Clics requis : <span className="highlight">{clicks}/{clicksRequired}</span>
+                <p className={styles['clicks-required']}>
+                  Clics requis : <span className={styles.highlight}>{clicks}/{clicksRequired}</span>
                 </p>
               </div>
               
-              <div className="click-box-container">
+              <div className={styles['click-box-container']}>
                 <div 
-                  className="click-box" 
+                  className={styles['click-box']} 
                   onClick={handleClick}
                 >
-                  <span className="click-text">CLIQUE</span>
+                  <span className={styles['click-text']}>CLIQUE</span>
                 </div>
               </div>
 
-              <div className="progress-container">
-                <div className="progress-label">Progression</div>
-                <div className="progress-bar-bg">
+              <div className={styles['progress-container']}>
+                <div className={styles['progress-label']}>Progression</div>
+                <div className={styles['progress-bar-bg']}>
                   <div 
-                    className="progress-bar-fill" 
+                    className={styles['progress-bar-fill']} 
                     style={{ width: `${getProgress()}%` }}
                   >
-                    <span className="progress-text">{Math.round(getProgress())}%</span>
+                    <span className={styles['progress-text']}>{Math.round(getProgress())}%</span>
                   </div>
                 </div>
               </div>
@@ -221,12 +232,12 @@ function ClickGame() {
           )}
         </div>
 
-        <div className="game-controls">
-          <Link to="/minigame" className="back-button">
+        <div className={styles['game-controls']}>
+          <Link to="/minigame" className={styles['back-button']}>
             ← Retour au lobby
           </Link>
           {isPlaying && (
-            <button className="reset-button" onClick={endGame}>
+            <button className={styles['reset-button']} onClick={endGame}>
               Arrêter
             </button>
           )}
