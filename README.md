@@ -29,6 +29,8 @@ L'application utilise une architecture en 5 tiers pour une scalabilité optimale
 - **bcrypt** - Hachage sécurisé des mots de passe
 - **jsonwebtoken** - Authentification JWT
 - **express-session** - Gestion des sessions
+- **swagger-ui-express** - Documentation API interactive
+- **swagger-jsdoc** - Génération OpenAPI 3.0
 
 ### DevOps
 - **Docker** - Conteneurisation
@@ -227,6 +229,19 @@ docker exec -it aero-click-redis redis-cli KEYS "*"
 ```
 
 ## 🎯 API Endpoints
+
+### 📚 Documentation interactive Swagger
+
+Une documentation complète de l'API est disponible via Swagger UI :
+
+- **API Gateway (Auth)** : http://localhost:5000/api-docs
+- **Business API (Scores/Game)** : http://localhost:5001/api-docs
+
+La documentation Swagger permet de :
+- 📖 Explorer tous les endpoints disponibles
+- 🧪 Tester les requêtes directement depuis le navigateur
+- 📝 Voir les schémas de données (request/response)
+- 🔐 Tester avec authentification JWT (Bearer token)
 
 ### Authentication (Port 5000)
 ```

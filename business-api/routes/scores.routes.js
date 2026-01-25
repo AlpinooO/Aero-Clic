@@ -48,7 +48,40 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get top scores (leaderboard)
+/**
+ * @swagger
+ * /scores/leaderboard:
+ *   get:
+ *     summary: Obtenir le classement des meilleurs joueurs
+ *     tags: [Scores]
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Nombre de joueurs à retourner
+ *     responses:
+ *       200:
+ *         description: Classement récupéré avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 leaderboard:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/LeaderboardEntry'
+ *                 cached:
+ *                   type: boolean
+ *       500:
+ *         description: Erreur serveur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.get('/leaderboard', async (req, res) => {
   try {
     const { limit = 10 } = req.query;
@@ -88,7 +121,49 @@ router.get('/leaderboard', async (req, res) => {
   }
 });
 
-// Submit new score
+/**
+ * @swagger
+ * /scores:
+ *   post:
+ *     summary: Enregistrer un nouveau score
+ *     tags: [Scores]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/SubmitScoreRequest'
+ *     responses:
+ *       201:
+ *         description: Score enregistré avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 scoreId:
+ *                   type: integer
+ *                 score:
+ *                   type: integer
+ *                 gameId:
+ *                   type: integer
+ *       400:
+ *         description: Données invalides
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Non authentifié
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.post('/', async (req, res) => {
   try {
     const { score, gameId = 1 } = req.body;
@@ -127,6 +202,35 @@ router.post('/', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /scores/personal-best:
+ *   get:
+ *     summary: Get user's personal best score
+ *     description: Retrieve the highest score and total games played for the authenticated user
+ *     tags: [Scores]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Personal best retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/PersonalBest'
+ *       401:
+ *         description: User authentication required
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 // Get user's personal best
 router.get('/personal-best', async (req, res) => {
   try {
