@@ -30,6 +30,9 @@ const proxyRequest = async (req, res) => {
   }
 };
 
+// Public routes - no authentication required
+router.all('/scores/leaderboard', proxyRequest);
+
 // Protected routes - require authentication
 router.use('/scores', authenticateToken);
 router.use('/game', authenticateToken);
