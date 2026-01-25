@@ -91,11 +91,13 @@ function ClickGame() {
         console.error('Failed to save score:', error);
       } finally {
         setIsSubmitting(false);
+        // Update game over state after score submission completes
+        setGameOver(true);
       }
+    } else {
+      // No score to submit, show game over immediately
+      setGameOver(true);
     }
-    
-    // Update game over state after score submission completes
-    setGameOver(true);
   };
 
   const handleClick = () => {
@@ -161,7 +163,7 @@ function ClickGame() {
         </div>
 
         <div className="game-area">
-          {!isPlaying && !gameOver ? (
+          {!isPlaying && !gameOver && !isSubmitting ? (
             <div className="start-screen">
               <h2>Prêt à t'entraîner ?</h2>
               <p>Clique sur le bouton pour commencer</p>
@@ -177,6 +179,11 @@ function ClickGame() {
                   <li>Chaque clic rapporte 10 points</li>
                 </ul>
               </div>
+            </div>
+          ) : isSubmitting ? (
+            <div className="start-screen">
+              <h2>Enregistrement du score...</h2>
+              <p>Veuillez patienter</p>
             </div>
           ) : gameOver ? (
             <div className="start-screen">
@@ -202,11 +209,6 @@ function ClickGame() {
               >
                 {isSubmitting ? 'Enregistrement...' : 'Rejouer'}
               </button>
-            </div>
-          ) : isSubmitting ? (
-            <div className="start-screen">
-              <h2>Enregistrement du score...</h2>
-              <p>Veuillez patienter</p>
             </div>
           ) : (
             <div className="play-screen">
