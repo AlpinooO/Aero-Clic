@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import scoreService from '../services/score.service';
+import './ClickGame.css';
 import styles from './ClickGame.module.css';
 import './Navbar.css';
 import logoImage from '../images/aerologo.png';
@@ -43,7 +45,7 @@ function ClickGame() {
     };
   }, [isPlaying, timeLeft]);
 
-  const startGame = () => {
+  const startGame = async () => {
     setIsPlaying(true);
     setGameOver(false);
     setLevel(1);
@@ -51,6 +53,15 @@ function ClickGame() {
     setTotalScore(0);
     setClicksRequired(5);
     setTimeLeft(levelTimeLimit);
+
+    // Démarrer une session de jeu
+    if (user) {
+      try {
+        await scoreService.startGameSession();
+      } catch (error) {
+        console.error('Failed to start game session:', error);
+      }
+    }
   };
 
   const nextLevel = () => {
@@ -63,10 +74,21 @@ function ClickGame() {
     setTimeLeft(levelTimeLimit);
   };
 
-  const endGame = () => {
+  const endGame = async () => {
     setIsPlaying(false);
     setGameOver(true);
     if (timerRef.current) clearTimeout(timerRef.current);
+
+    // Enregistrer le score final dans la BDD
+    if (user && totalScore > 0) {
+      try {
+        await scoreService.submitScore(1, totalScore);
+        await scoreService.endGameSession();
+        console.log('Score enregistré avec succès!');
+      } catch (error) {
+        console.error('Failed to save score:', error);
+      }
+    }
   };
 
   const handleClick = () => {

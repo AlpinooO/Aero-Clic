@@ -8,8 +8,10 @@ import MiniGameLobby from './components/MiniGameLobby';
 import ClickGame from './components/ClickGame';
 import GripRushGame from './components/GripRushGame';
 import ProtectedRoute from './components/ProtectedRoute';
-import './App.css';
 import Dashboard from './components/Dashboard';
+import Leaderboard from './components/Leaderboard';
+import './App.css';
+
 function App() {
   return (
     <AuthProvider>
@@ -19,6 +21,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/minigame" element={<MiniGameLobby />} />
           <Route path="/minigame/click" element={<ClickGame />} />
           <Route path="/minigame/griprush" element={<GripRushGame />} />
