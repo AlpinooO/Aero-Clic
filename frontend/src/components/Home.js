@@ -32,6 +32,8 @@ function Home() {
           <Link to="/" className="nav-link">Accueil</Link>
           <span className="nav-link" onClick={handleAction}>S'entrainer</span>
           <Link to="/dashboard" className="nav-link">Dashboard</Link>
+          <Link to="/minigame" className="nav-link">Minijeux</Link>
+          <span className="nav-link">Profil</span>
           
           {user ? (
             <button 

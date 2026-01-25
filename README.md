@@ -1,4 +1,4 @@
-# Aero Click 🛩️
+# Aero Click 
 
 A modular web service platform built with Docker, designed for easy scalability and service integration.
 
@@ -20,7 +20,7 @@ A modular web service platform built with Docker, designed for easy scalability 
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/AlpinooO/Aero-Clic.git
    cd Aero-Clic
    ```
 
