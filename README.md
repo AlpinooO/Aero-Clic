@@ -1,12 +1,17 @@
-# Aero Click 🛩️
+# Aero Clic 💪
 
-A modular web service platform built with Docker, designed for easy scalability and service integration.
+Application web de salle de gym virtuelle avec mini-jeux interactifs, développée avec une architecture Docker multi-tiers. 
+Les utilisateurs peuvent s'entraîner virtuellement à travers différents exercices gamifiés et suivre leurs performances.
 
-## 🏗️ Current Architecture
+## 🏗️ Architecture Multi-tiers
 
-- **Frontend**: React 18 application with hot-reload development
-- **Docker**: Multi-stage builds for development and production
-- **Networking**: Isolated Docker network for service communication
+L'application utilise une architecture en 5 tiers :
+
+- **Tier 1 - Frontend**: React 18 avec Nginx (production)
+- **Tier 2 - API Gateway**: Authentification JWT et routage
+- **Tier 3 - Business API**: Logique métier et gestion des scores
+- **Tier 4 - Base de données**: MySQL 8.0 pour la persistance
+- **Tier 5 - Cache**: Redis pour optimiser les performances
 
 ## 📋 Prerequisites
 
@@ -18,27 +23,32 @@ A modular web service platform built with Docker, designed for easy scalability 
 
 ### Development Mode
 
-1. **Clone the repository**
+1. **Cloner le repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/AlpinooO/Aero-Clic.git
    cd Aero-Clic
    ```
 
-2. **Start the application**
+2. **Configurer l'environnement**
    ```bash
-   docker-compose up
+   cp .env.example .env
    ```
 
-3. **Access the application**
+3. **Démarrer l'application**
+   ```bash
+   docker-compose up -d
+   ```
+
+4. **Accéder à l'application**
    - Frontend: http://localhost:3000
+   - API Gateway: http://localhost:5000
+   - Business API: http://localhost:5001
 
-4. **Stop the application**
-   ```bash
-   docker-compose down
-   ```
+```bash
+docker-compose -f docker-compose.prod.yml up -d --build
+```
 
-### Production Mode
-
+Accès sur http://localhost
 Build and run the production version:
 
 ```bash
@@ -209,8 +219,6 @@ docker image prune
 
 ## 📄 License
 
-[Your License Here]
-Développé pour les passionnés de fitness virtuel 💪
----
+Projet personel
 
-Built with ❤️ for aviation enthusiasts
+---
