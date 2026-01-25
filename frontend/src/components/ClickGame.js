@@ -13,6 +13,7 @@ function ClickGame() {
   const [timeLeft, setTimeLeft] = useState(3);
   const [totalScore, setTotalScore] = useState(0);
   const [clicksRequired, setClicksRequired] = useState(5);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const timerRef = useRef(null);
   const clicksRef = useRef(0);
   const clicksRequiredRef = useRef(5);
@@ -42,6 +43,11 @@ function ClickGame() {
   }, [isPlaying, timeLeft]);
 
   const startGame = async () => {
+    // Prevent starting a new game while score submission is in progress
+    if (isSubmitting) {
+      return;
+    }
+    
     setIsPlaying(true);
     setGameOver(false);
     setLevel(1);
@@ -72,19 +78,24 @@ function ClickGame() {
 
   const endGame = async () => {
     setIsPlaying(false);
-    setGameOver(true);
     if (timerRef.current) clearTimeout(timerRef.current);
 
     // Enregistrer le score final dans la BDD
     if (user && totalScore > 0) {
+      setIsSubmitting(true);
       try {
         await scoreService.submitScore(1, totalScore, level);
         await scoreService.endGameSession();
         console.log('Score enregistré avec succès!');
       } catch (error) {
         console.error('Failed to save score:', error);
+      } finally {
+        setIsSubmitting(false);
       }
     }
+    
+    // Update game over state after score submission completes
+    setGameOver(true);
   };
 
   const handleClick = () => {
@@ -184,9 +195,18 @@ function ClickGame() {
                   <span className="final-value">{clicks}/{clicksRequired}</span>
                 </div>
               </div>
-              <button className="start-button" onClick={startGame}>
-                Rejouer
+              <button 
+                className="start-button" 
+                onClick={startGame}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Enregistrement...' : 'Rejouer'}
               </button>
+            </div>
+          ) : isSubmitting ? (
+            <div className="start-screen">
+              <h2>Enregistrement du score...</h2>
+              <p>Veuillez patienter</p>
             </div>
           ) : (
             <div className="play-screen">
