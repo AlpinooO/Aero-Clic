@@ -108,7 +108,7 @@ function ClickGame() {
         <div className="nav-links">
           <Link to="/" className="nav-link">Accueil</Link>
           <Link to="/minigame" className="nav-link">Minijeux</Link>
-          <span className="nav-link">Profil</span>
+          {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
           
           {user ? (
             <button 

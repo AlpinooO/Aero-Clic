@@ -2,6 +2,8 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './MiniGameLobby.css';
+import './Navbar.css';
+import logoImage from '../images/aerologo.png';
 
 function MiniGameLobby() {
   const { user, logout } = useAuth();
@@ -15,24 +17,27 @@ function MiniGameLobby() {
     }
   };
 
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
+  };
+
   return (
     <div className="home-container">
       <nav className="navbar">
         <div className="logo-container">
-          <span>AÉRO</span>
-          <span style={{ color: '#76ff03' }}>CLIC</span>
-          <span style={{ fontSize: '1.5rem', marginLeft: '5px' }}>🖱️</span>
+          <img src={logoImage} alt="AÉRO CLIC Logo" className="logo-image" />
         </div>
         
         <div className="nav-links">
           <Link to="/" className="nav-link">Accueil</Link>
-          <span className="nav-link" onClick={handleAction}>S'entrainer</span>
-          <Link to="/minigame" className="nav-link">Minijeux</Link>
-          <span className="nav-link">Profil</span>
+          <Link to="/minigame" className="nav-link">Mini-jeux</Link>
+          <Link to="/leaderboard" className="nav-link">Classement</Link>
+          {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
           
           {user ? (
             <button 
-              onClick={logout} 
+              onClick={handleLogout} 
               className="btn-primary" 
               style={{ backgroundColor: '#d32f2f' }}
             >
