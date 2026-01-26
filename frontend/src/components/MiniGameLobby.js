@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Navbar from './Navbar';
 import styles from './MiniGameLobby.module.css';
-import './Navbar.css';
 import beatpulseImage from '../images/beatpulse.jpeg';
 import griprushImage from '../images/griprush.jpeg';
 import clickstormImage from '../images/clickstorm.jpeg';
@@ -18,6 +18,11 @@ function MiniGameLobby() {
     } else {
       navigate('/login');
     }
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
   };
 
   return (
@@ -71,8 +76,7 @@ function MiniGameLobby() {
             Déplace rapidement les éléments pour travailler ta précision et ta coordination.
           </p>
         </Link>
-
-        <div className={styles.gameCard}>
+          <Link to="/minigame/beatpulse" className={styles.gameCard}>
           <div className={`${styles.gameImage} ${styles.osuGame}`}>
             <img src={beatpulseImage} alt="BeatPulse" />
           </div>
@@ -80,7 +84,7 @@ function MiniGameLobby() {
           <p className={styles.gameDescription}>
             Suis le rythme et touche les cibles pour tester ta concentration et ton endurance.
           </p>
-        </div>
+          </Link>
       </div>
     </div>
   );

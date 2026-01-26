@@ -7,15 +7,21 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "keywords": ["api", "business", "express"],
+  "keywords": [
+    "api",
+    "business",
+    "express"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "mysql2": "^3.6.5",
-    "redis": "^4.6.10"
+    "redis": "^4.6.10",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

@@ -11,6 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './components/Dashboard';
 import Leaderboard from './components/Leaderboard';
 import './App.css';
+import BeatGame from './components/BeatGame';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/minigame" element={<MiniGameLobby />} />
           <Route path="/minigame/click" element={<ClickGame />} />
           <Route path="/minigame/griprush" element={<GripRushGame />} />
+          <Route path="/minigame/beatpulse" element={<BeatGame />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

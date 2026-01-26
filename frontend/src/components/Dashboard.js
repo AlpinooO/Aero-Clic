@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import scoreService from '../services/score.service';
+import Navbar from './Navbar';
 import styles from './Dashboard.module.css';
 import './Navbar.css';
 import logoImage from '../images/aerologo.png';

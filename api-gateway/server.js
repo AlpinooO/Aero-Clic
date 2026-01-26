@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const dotenv = require('dotenv');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger.config');
 const authRoutes = require('./routes/auth.routes');
 const proxyRoutes = require('./routes/proxy.routes');
 
@@ -11,8 +13,23 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
+const allowedOrigins = [
+  process.env.FRONTEND_URL || 'http://localhost:3000',
+  'http://localhost',
+  'http://localhost:80'
+];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: function (origin, callback) {
+    // Permettre les requêtes sans origine (comme les appels depuis Postman)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
@@ -26,8 +43,14 @@ app.use(session({
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    maxAge: 24 * 60 * 60 * 1000
   }
+}));
+
+// Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Aero Clic API Gateway - Documentation'
 }));
 
 // Routes

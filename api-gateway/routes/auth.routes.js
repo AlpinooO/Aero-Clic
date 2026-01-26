@@ -5,7 +5,43 @@ const jwt = require('jsonwebtoken');
 const db = require('../config/db.config');
 const { authenticateToken } = require('../middleware/auth.middleware');
 
-// Register new user
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     summary: Créer un nouveau compte utilisateur
+ *     tags: [Authentification]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/RegisterRequest'
+ *     responses:
+ *       201:
+ *         description: Utilisateur créé avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 userId:
+ *                   type: integer
+ *       400:
+ *         description: Données invalides
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       409:
+ *         description: Utilisateur déjà existant
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -44,7 +80,38 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login user (JWT)
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Se connecter avec username et password
+ *     tags: [Authentification]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LoginRequest'
+ *     responses:
+ *       200:
+ *         description: Connexion réussie
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AuthResponse'
+ *       400:
+ *         description: Données manquantes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       401:
+ *         description: Identifiants invalides
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -97,7 +164,29 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Logout user
+/**
+ * @swagger
+ * /api/auth/logout:
+ *   post:
+ *     summary: Se déconnecter (détruit la session)
+ *     tags: [Authentification]
+ *     responses:
+ *       200:
+ *         description: Déconnexion réussie
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Erreur serveur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.post('/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -107,7 +196,37 @@ router.post('/logout', (req, res) => {
   });
 });
 
-// Get current user
+/**
+ * @swagger
+ * /api/auth/me:
+ *   get:
+ *     summary: Obtenir les informations de l'utilisateur connecté
+ *     tags: [Authentification]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Informations utilisateur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Non authentifié
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       404:
+ *         description: Utilisateur non trouvé
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 router.get('/me', authenticateToken, async (req, res) => {
   try {
     const [users] = await db.query(

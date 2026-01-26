@@ -1,22 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import scoreService from '../services/score.service';
 import Navbar from './Navbar';
-import styles from './GripRushGame.module.css';
+import styles from './BeatGame.module.css';
 
-function GripRushGame() {
+function BeatGame() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isPlaying, setIsPlaying] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(10);
   const [score, setScore] = useState(0);
-  const [squarePos, setSquarePos] = useState({ x: 0, y: 0 });
   const [targetPos, setTargetPos] = useState({ x: 0, y: 0 });
+  const [timeAllowed, setTimeAllowed] = useState(2000); 
+  const [timeLeft, setTimeLeft] = useState(100); 
   const timerRef = useRef(null);
-  const dragAreaRef = useRef(null);
-  const squareSize = 50;
-  const targetSize = 80;
+  const gameAreaRef = useRef(null);
+  const targetSize = 60;
+  const minTime = 400; 
 
   const getRandomPosition = (areaWidth, areaHeight, size) => {
     const maxX = Math.max(areaWidth - size, 0);
@@ -31,63 +32,53 @@ function GripRushGame() {
     setIsPlaying(true);
     setGameOver(false);
     setScore(0);
-    setTimeLeft(10);
+    setTimeAllowed(2000);
+    setTimeLeft(100);
+    spawnNewTarget();
   };
 
   const endGame = () => {
     setIsPlaying(false);
     setGameOver(true);
-    if (timerRef.current) clearTimeout(timerRef.current);
+    if (timerRef.current) clearInterval(timerRef.current);
   };
 
-  const spawnNewRound = () => {
-    const area = dragAreaRef.current;
+  const spawnNewTarget = () => {
+    const area = gameAreaRef.current;
     if (!area) return;
     const { width, height } = area.getBoundingClientRect();
-    setSquarePos(getRandomPosition(width, height, squareSize));
     setTargetPos(getRandomPosition(width, height, targetSize));
+    setTimeLeft(100);
+    
+    if (timerRef.current) clearInterval(timerRef.current);
+    
+    const startTime = Date.now();
+    timerRef.current = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, 100 - (elapsed / timeAllowed) * 100);
+      setTimeLeft(remaining);
+      
+      if (remaining <= 0) {
+        clearInterval(timerRef.current);
+        endGame();
+      }
+    }, 16);
   };
 
   useEffect(() => {
-    if (!isPlaying) return;
-    spawnNewRound();
-  }, [isPlaying]);
-
-  useEffect(() => {
-    if (!isPlaying) return undefined;
-    timerRef.current = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev <= 1) {
-          clearInterval(timerRef.current);
-          endGame();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isPlaying]);
+  }, []);
 
-  const handleDrop = (event) => {
-    event.preventDefault();
+  const handleTargetClick = () => {
     if (!isPlaying) return;
+    
     setScore(prev => prev + 1);
-    spawnNewRound();
-  };
-
-  const handleDragOver = (event) => {
-    event.preventDefault();
-  };
-
-  const handleAction = () => {
-    if (user) {
-      alert(`Prêt à s'entrainer, ${user.username} !`);
-    } else {
-      navigate('/login');
-    }
+    
+    setTimeAllowed(prev => Math.max(minTime, prev - 80));
+    
+    spawnNewTarget();
   };
 
   return (
@@ -96,19 +87,19 @@ function GripRushGame() {
 
       <div className={styles['game-content']}>
         <div className={styles['game-header']}>
-          <h1 className={styles['game-title']}>Mini-Jeu : GripRush</h1>
+          <h1 className={styles['game-title']}>Mini-Jeu : BeatRush</h1>
           <p className={styles['game-subtitle']}>
-            Glisse le carré dans la cible le plus vite possible !
+            Clique sur les cibles avant que le temps s'écoule ! Le tempo accélère !
           </p>
         </div>
 
         <div className={styles['game-stats']}>
           <div className={styles['stat-box']}>
-            <span className={styles['stat-label']}>Temps</span>
-            <span className={styles['stat-value']}>{timeLeft}s</span>
+            <span className={styles['stat-label']}>Tempo</span>
+            <span className={styles['stat-value']}>{(timeAllowed / 1000).toFixed(1)}s</span>
           </div>
           <div className={styles['stat-box']}>
-            <span className={styles['stat-label']}>Carrés</span>
+            <span className={styles['stat-label']}>Score</span>
             <span className={styles['stat-value']}>{score}</span>
           </div>
         </div>
@@ -116,18 +107,18 @@ function GripRushGame() {
         <div className={styles['game-area']}>
           {!isPlaying && !gameOver ? (
             <div className={styles['start-screen']}>
-              <h2>Prêt à t'entraîner ?</h2>
-              <p>Glisse le carré dans la cible pendant 10 secondes</p>
+              <h2>Prêt à tester tes réflexes ?</h2>
+              <p>Clique sur les cibles avant que le temps s'écoule</p>
               <button className={styles['start-button']} onClick={startGame}>
                 Commencer
               </button>
               <div className={styles.instructions}>
                 <h3>Comment jouer :</h3>
                 <ul>
-                  <li>Un carré et une cible apparaissent aléatoirement</li>
-                  <li>Fais un drag & drop du carré dans la cible</li>
-                  <li>Chaque réussite relance un nouveau tour</li>
-                  <li>Tu as 10 secondes pour marquer un max</li>
+                  <li>Une cible apparaît aléatoirement sur l'écran</li>
+                  <li>Clique dessus avant que le temps s'écoule</li>
+                  <li>À chaque clic réussi, le tempo accélère !</li>
+                  <li>Si tu rates, c'est game over</li>
                 </ul>
               </div>
             </div>
@@ -136,8 +127,12 @@ function GripRushGame() {
               <h2>Partie terminée ! 🏆</h2>
               <div className={styles['final-stats']}>
                 <div className={styles['final-stat']}>
-                  <span className={styles['final-label']}>Carrés réussis</span>
+                  <span className={styles['final-label']}>Score Final</span>
                   <span className={styles['final-value']}>{score}</span>
+                </div>
+                <div className={styles['final-stat']}>
+                  <span className={styles['final-label']}>Tempo Final</span>
+                  <span className={styles['final-value']}>{(timeAllowed / 1000).toFixed(1)}s</span>
                 </div>
               </div>
               <button className={styles['start-button']} onClick={startGame}>
@@ -147,28 +142,39 @@ function GripRushGame() {
           ) : (
             <div className={styles['play-screen']}>
               <div className={styles['level-info']}>
-                <h2>Dépose le carré</h2>
+                <h2>Clique vite !</h2>
                 <p className={styles['clicks-required']}>
-                  Score : <span className={styles.highlight}>{score}</span>
+                  Tempo : <span className={styles.highlight}>{(timeAllowed / 1000).toFixed(1)}s</span>
                 </p>
               </div>
 
-              <div className={styles['drag-area']} ref={dragAreaRef}>
+              <div className={styles['drag-area']} ref={gameAreaRef}>
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: `${timeLeft}%`,
+                  height: '5px',
+                  backgroundColor: timeLeft > 50 ? '#4CAF50' : timeLeft > 25 ? '#FFC107' : '#f44336',
+                  transition: 'width 0.1s linear',
+                  zIndex: 10
+                }} />
+                
                 <div
                   className={styles['target-square']}
-                  style={{ width: targetSize, height: targetSize, left: targetPos.x, top: targetPos.y }}
-                  onDrop={handleDrop}
-                  onDragOver={handleDragOver}
+                  style={{ 
+                    width: targetSize, 
+                    height: targetSize, 
+                    left: targetPos.x, 
+                    top: targetPos.y,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                  onClick={handleTargetClick}
                 >
-                  <span className={styles['target-text']}>DROP</span>
-                </div>
-                <div
-                  className={styles['draggable-square']}
-                  style={{ width: squareSize, height: squareSize, left: squarePos.x, top: squarePos.y }}
-                  draggable
-                  onDragStart={(event) => event.dataTransfer.setData('text/plain', 'square')}
-                >
-                  <span className={styles['drag-text']}>DRAG</span>
+                  <span className={styles['target-text']}>CLIC</span>
                 </div>
               </div>
             </div>
@@ -190,4 +196,4 @@ function GripRushGame() {
   );
 }
 
-export default GripRushGame;
+export default BeatGame;
