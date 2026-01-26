@@ -29,6 +29,8 @@ L'application utilise une architecture en 5 tiers pour une scalabilité optimale
 - **bcrypt** - Hachage sécurisé des mots de passe
 - **jsonwebtoken** - Authentification JWT
 - **express-session** - Gestion des sessions
+- **swagger-ui-express** - Documentation API interactive
+- **swagger-jsdoc** - Génération OpenAPI 3.0
 
 ### DevOps
 - **Docker** - Conteneurisation
@@ -60,7 +62,7 @@ L'application utilise une architecture en 5 tiers pour une scalabilité optimale
 
 2. **Démarrer l'application**
    ```bash
-   docker-compose up -d --build
+   docker compose up -d --build
    ```
 
 3. **Accéder à l'application**
@@ -193,28 +195,28 @@ games (
 
 ```bash
 # Démarrer tous les services
-docker-compose up -d --build
+docker compose up -d --build
 
 # Voir les logs
-docker-compose logs -f
+docker compose logs -f
 
 # Arrêter tous les services
-docker-compose down
+docker compose down
 
 # Arrêter et supprimer les volumes (réinitialise la DB)
-docker-compose down -v
+docker compose down -v
 ```
 
 ### Débogage
 
 ```bash
 # Vérifier l'état des conteneurs
-docker-compose ps
+docker compose ps
 
 # Voir les logs d'un service spécifique
-docker-compose logs -f frontend
-docker-compose logs -f api-gateway
-docker-compose logs -f business-api
+docker compose logs -f frontend
+docker compose logs -f api-gateway
+docker compose logs -f business-api
 
 # Accéder à la base de données
 docker exec -it aero-click-database mysql -u root -prootpassword
@@ -227,6 +229,19 @@ docker exec -it aero-click-redis redis-cli KEYS "*"
 ```
 
 ## 🎯 API Endpoints
+
+### 📚 Documentation interactive Swagger
+
+Une documentation complète de l'API est disponible via Swagger UI :
+
+- **API Gateway (Auth)** : http://localhost:5000/api-docs
+- **Business API (Scores/Game)** : http://localhost:5001/api-docs
+
+La documentation Swagger permet de :
+- 📖 Explorer tous les endpoints disponibles
+- 🧪 Tester les requêtes directement depuis le navigateur
+- 📝 Voir les schémas de données (request/response)
+- 🔐 Tester avec authentification JWT (Bearer token)
 
 ### Authentication (Port 5000)
 ```
@@ -261,7 +276,7 @@ POST   /api/game/end           - Terminer une session (authentifié)
 ## 🚀 Production
 
 ```bash
-docker-compose -f docker-compose.prod.yml up -d --build
+docker compose -f docker-compose.prod.yml up -d --build
 ```
 
 Accès sur http://localhost:80

@@ -20,6 +20,11 @@ function MiniGameLobby() {
     }
   };
 
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
+  };
+
   return (
     <div className={styles.homeContainer}>
       <nav className="navbar">
@@ -27,26 +32,26 @@ function MiniGameLobby() {
           <img src={logoImage} alt="AÉRO CLIC Logo" className="logo-image" />
         </div>
         
-<div className="nav-links">
-          <Link to="/" className="nav-link">Accueil</Link>
-          <Link to="/minigame" className="nav-link">Mini-jeux</Link>
-          <Link to="/leaderboard" className="nav-link">Classement</Link>
-          {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
-          
-          {user ? (
-            <button 
-              onClick={logout} 
-              className="btn-primary" 
-              style={{ backgroundColor: '#d32f2f' }}
-            >
-              Se déconnecter
-            </button>
-          ) : (
-            <Link to="/login" className="btn-primary">
-              Se connecter
-            </Link>
-          )}
-        </div>
+                <div className="nav-links">
+                  <Link to="/" className="nav-link">Accueil</Link>
+                  <Link to="/minigame" className="nav-link">Mini-jeux</Link>
+                  <Link to="/leaderboard" className="nav-link">Classement</Link>
+                  {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
+                  
+                  {user ? (
+                    <button 
+                      onClick={logout} 
+                      className="btn-primary" 
+                      style={{ backgroundColor: '#d32f2f' }}
+                    >
+                      Se déconnecter
+                    </button>
+                  ) : (
+                    <Link to="/login" className="btn-primary">
+                      Se connecter
+                    </Link>
+                  )}
+                </div>
       </nav>
 
       <div className={styles.heroSection}>
