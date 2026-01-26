@@ -7,10 +7,10 @@ services:
       target: production
     container_name: aero-click-frontend-prod
     ports:
-      - "${FRONTEND_PORT:-80}:80"
+      - "80:80"
     environment:
       - NODE_ENV=production
-      - REACT_APP_API_URL=http://api-gateway:5000
+      - REACT_APP_API_URL=http://localhost:5000
     networks:
       - aero-click-network
     depends_on:
