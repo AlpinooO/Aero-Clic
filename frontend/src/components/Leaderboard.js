@@ -50,7 +50,7 @@ function Leaderboard() {
           
           {user ? (
             <button 
-              onClick={handleLogout} 
+              onClick={logout} 
               className="btn-primary" 
               style={{ backgroundColor: '#d32f2f' }}
             >

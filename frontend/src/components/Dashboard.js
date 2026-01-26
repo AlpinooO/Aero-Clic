@@ -53,11 +53,11 @@ function Dashboard() {
           <Link to="/minigame" className="nav-link">Mini-jeux</Link>
           <Link to="/leaderboard" className="nav-link">Classement</Link>
           {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
-
+          
           {user ? (
-            <button
-              onClick={logout}
-              className="btn-primary"
+            <button 
+              onClick={logout} 
+              className="btn-primary" 
               style={{ backgroundColor: '#d32f2f' }}
             >
               Se déconnecter
@@ -93,13 +93,19 @@ function Dashboard() {
             ) : (
               <div className={styles['stats-grid']}>
                 <div className={styles['stat-card']}>
-                  <span className={styles['stat-label']}>Score total</span>
+                  <span className={styles['stat-label']}>Meilleur score ClickStorm</span>
                   <span className={styles['stat-value']}>
-                    {(personalBest?.totalScore ?? 0).toLocaleString()}
+                    {Number(bestScore).toLocaleString()}
                   </span>
                 </div>
                 <div className={styles['stat-card']}>
-                  <span className={styles['stat-label']}>Meilleur score</span>
+                  <span className={styles['stat-label']}>Meilleur score GripRush</span>
+                  <span className={styles['stat-value']}>
+                    {Number(bestScore).toLocaleString()}
+                  </span>
+                </div>
+                <div className={styles['stat-card']}>
+                  <span className={styles['stat-label']}>Meilleur score BeatPulse</span>
                   <span className={styles['stat-value']}>
                     {Number(bestScore).toLocaleString()}
                   </span>
