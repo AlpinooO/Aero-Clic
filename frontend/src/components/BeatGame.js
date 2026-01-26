@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import scoreService from '../services/score.service';
+import Navbar from './Navbar';
 import styles from './BeatGame.module.css';
-import './Navbar.css';
 
 function BeatGame() {
   const { user, logout } = useAuth();
@@ -83,34 +83,7 @@ function BeatGame() {
 
   return (
     <div className={styles['game-container']}>
-      <nav className="navbar">
-        <div className="logo-container">
-          <span>AÉRO</span>
-          <span style={{ color: '#76ff03' }}>CLIC</span>
-          <span style={{ fontSize: '1.5rem', marginLeft: '5px' }}>🖱️</span>
-        </div>
-        
-<div className="nav-links">
-          <Link to="/" className="nav-link">Accueil</Link>
-          <Link to="/minigame" className="nav-link">Mini-jeux</Link>
-          <Link to="/leaderboard" className="nav-link">Classement</Link>
-          {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
-          
-          {user ? (
-            <button 
-              onClick={logout} 
-              className="btn-primary" 
-              style={{ backgroundColor: '#d32f2f' }}
-            >
-              Se déconnecter
-            </button>
-          ) : (
-            <Link to="/login" className="btn-primary">
-              Se connecter
-            </Link>
-          )}
-        </div>
-      </nav>
+      <Navbar />
 
       <div className={styles['game-content']}>
         <div className={styles['game-header']}>

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Navbar from './Navbar';
 import styles from './Home.module.css';
-import './Navbar.css';
 import bodybuilderImage from '../images/AIbodybuilder.png';
 import logoImage from '../images/aerologo.png';
 import griprushImage from '../images/griprush.jpeg';
@@ -23,32 +23,7 @@ function Home() {
 
   return (
     <div className={styles['home-container']}>
-      <nav className="navbar">
-        <div className="logo-container">
-          <img src={logoImage} alt="AÉRO CLIC Logo" className="logo-image" />
-        </div>
-        
-        <div className="nav-links">
-          <Link to="/" className="nav-link">Accueil</Link>
-          <Link to="/minigame" className="nav-link">Mini-jeux</Link>
-          <Link to="/leaderboard" className="nav-link">Classement</Link>
-          {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
-          
-          {user ? (
-            <button 
-              onClick={logout} 
-              className="btn-primary" 
-              style={{ backgroundColor: '#d32f2f' }}
-            >
-              Se déconnecter
-            </button>
-          ) : (
-            <Link to="/login" className="btn-primary">
-              Se connecter
-            </Link>
-          )}
-        </div>
-      </nav>
+      <Navbar />
 
       <section className={styles['hero-section']}>
         <div className={styles['hero-content']}>
