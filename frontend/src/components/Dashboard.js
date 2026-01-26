@@ -70,55 +70,52 @@ function Dashboard() {
         </div>
       </nav>
 
-      <section className={styles['dashboard-content']}>
-        <div className={styles['profil-item']}>
-          <img src={avatarImage} alt="Profil" className={styles['profil-image']} />
-          <div className={styles['profil-infos']}>
-            <div className={styles['profil-row']}>
-              <span className={styles['profil-label']}>Nom</span>
-              <span className={styles['profil-value']}>{user?.nom ?? user?.username ?? '-'}</span>
+      <section className={styles.dashboardContent}>
+        <div className={styles.profilCard}>
+          <img src={avatarImage} alt="Profil" className={styles.profilImage} />
+          <div className={styles.profilInfos}>
+            <div className={styles.profilRow}>
+              <span className={styles.profilLabel}>Nom</span>
+              <span className={styles.profilValue}>{user?.nom ?? user?.username ?? '-'}</span>
             </div>
-            <div className={styles['profil-row']}>
-              <span className={styles['profil-label']}>Mail</span>
-              <span className={styles['profil-value']}>{user?.email ?? '-'}</span>
+            <div className={styles.profilRow}>
+              <span className={styles.profilLabel}>Mail</span>
+              <span className={styles.profilValue}>{user?.email ?? '-'}</span>
             </div>
           </div>
         </div>
 
         {user && (
-          <div className={styles['stats-section']}>
-            <h2 className={styles['stats-title']}>Statistiques</h2>
+          <div className={styles.statsSection}>
+            <h2 className={styles.statsTitle}>Statistiques</h2>
             {loading ? (
-              <p className={styles['stats-loading']}>Chargement...</p>
+              <p className={styles.statsLoading}>Chargement...</p>
             ) : (
-              <div className={styles['stats-grid']}>
-                <div className={styles['stat-card']}>
-                  <span className={styles['stat-label']}>Meilleur score ClickStorm</span>
-                  <span className={styles['stat-value']}>
-                    {Number(bestScore).toLocaleString()}
-                  </span>
+              <div className={styles.statsGrid}>
+                <div className={styles.statCard}>
+                  <span className={styles.statIcon} aria-hidden>⚡</span>
+                  <span className={styles.statLabel}>Meilleur score ClickStorm</span>
+                  <span className={styles.statValue}>{Number(bestScore).toLocaleString()}</span>
                 </div>
-                <div className={styles['stat-card']}>
-                  <span className={styles['stat-label']}>Meilleur score GripRush</span>
-                  <span className={styles['stat-value']}>
-                    {Number(bestScore).toLocaleString()}
-                  </span>
+                <div className={styles.statCard}>
+                  <span className={styles.statIcon} aria-hidden>💪</span>
+                  <span className={styles.statLabel}>Meilleur score GripRush</span>
+                  <span className={styles.statValue}>{Number(bestScore).toLocaleString()}</span>
                 </div>
-                <div className={styles['stat-card']}>
-                  <span className={styles['stat-label']}>Meilleur score BeatPulse</span>
-                  <span className={styles['stat-value']}>
-                    {Number(bestScore).toLocaleString()}
-                  </span>
+                <div className={styles.statCard}>
+                  <span className={styles.statIcon} aria-hidden>🎵</span>
+                  <span className={styles.statLabel}>Meilleur score BeatPulse</span>
+                  <span className={styles.statValue}>{Number(bestScore).toLocaleString()}</span>
                 </div>
-                <div className={styles['stat-card']}>
-                  <span className={styles['stat-label']}>Parties jouées</span>
-                  <span className={styles['stat-value']}>{gamesPlayed}</span>
+                <div className={styles.statCard}>
+                  <span className={styles.statIcon} aria-hidden>🎮</span>
+                  <span className={styles.statLabel}>Parties jouées</span>
+                  <span className={styles.statValue}>{gamesPlayed}</span>
                 </div>
-                <div className={styles['stat-card']}>
-                  <span className={styles['stat-label']}>Rang au classement</span>
-                  <span className={styles['stat-value']}>
-                    {rank > 0 ? `#${rank}` : '-'}
-                  </span>
+                <div className={`${styles.statCard} ${styles.statCardRank}`}>
+                  <span className={styles.statIcon} aria-hidden>🏆</span>
+                  <span className={styles.statLabel}>Rang au classement</span>
+                  <span className={styles.statValue}>{rank > 0 ? `#${rank}` : '-'}</span>
                 </div>
               </div>
             )}
