@@ -27,7 +27,31 @@ function MiniGameLobby() {
 
   return (
     <div className={styles.homeContainer}>
-      <Navbar />
+      <nav className="navbar">
+        <div className="logo-container">
+          <img src={logoImage} alt="AÉRO CLIC Logo" className="logo-image" />
+        </div>
+        
+        <div className="nav-links">
+          <Link to="/" className="nav-link">Accueil</Link>
+          <span className="nav-link" onClick={handleAction}>S'entrainer</span>
+          <Link to="/dashboard" className="nav-link">Dashboard</Link>
+          <Link to="/minigame" className="nav-link">Minijeux</Link>
+          {user ? (
+            <button 
+              onClick={logout} 
+              className="btn-primary" 
+              style={{ backgroundColor: '#d32f2f' }}
+            >
+              Se déconnecter
+            </button>
+          ) : (
+            <Link to="/login" className="btn-primary">
+              Se connecter
+            </Link>
+          )}
+        </div>
+      </nav>
 
       <div className={styles.heroSection}>
       </div>
