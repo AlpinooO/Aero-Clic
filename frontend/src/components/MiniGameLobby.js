@@ -72,8 +72,7 @@ function MiniGameLobby() {
             Déplace rapidement les éléments pour travailler ta précision et ta coordination.
           </p>
         </Link>
-
-        <div className={styles.gameCard}>
+          <Link to="/minigame/beatpulse" className={styles.gameCard}>
           <div className={`${styles.gameImage} ${styles.osuGame}`}>
             <img src={beatpulseImage} alt="BeatPulse" />
           </div>
@@ -81,7 +80,7 @@ function MiniGameLobby() {
           <p className={styles.gameDescription}>
             Suis le rythme et touche les cibles pour tester ta concentration et ton endurance.
           </p>
-        </div>
+          </Link>
       </div>
     </div>
   );
