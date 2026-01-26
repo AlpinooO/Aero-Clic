@@ -114,12 +114,11 @@ function ClickGame() {
           <img src={logoImage} alt="AÉRO CLIC Logo" className="logo-image" />
         </div>
         
-        <div className="nav-links">
+<div className="nav-links">
           <Link to="/" className="nav-link">Accueil</Link>
-          <span className="nav-link" onClick={handleAction}>S'entrainer</span>
-          <Link to="/dashboard" className="nav-link">Dashboard</Link>
-          <Link to="/minigame" className="nav-link">Minijeux</Link>
-          <span className="nav-link">Profil</span>
+          <Link to="/minigame" className="nav-link">Mini-jeux</Link>
+          <Link to="/leaderboard" className="nav-link">Classement</Link>
+          {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
           
           {user ? (
             <button 
