@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import scoreService from '../services/score.service';
+import Navbar from './Navbar';
 import styles from './ClickGame.module.css';
-import './Navbar.css';
-import logoImage from '../images/aerologo.png';
 
 function ClickGame() {
   const { user, logout } = useAuth();
@@ -109,33 +108,7 @@ function ClickGame() {
 
   return (
     <div className={styles['game-container']}>
-      <nav className="navbar">
-        <div className="logo-container">
-          <img src={logoImage} alt="AÉRO CLIC Logo" className="logo-image" />
-        </div>
-        
-        <div className="nav-links">
-          <Link to="/" className="nav-link">Accueil</Link>
-          <span className="nav-link" onClick={handleAction}>S'entrainer</span>
-          <Link to="/dashboard" className="nav-link">Dashboard</Link>
-          <Link to="/minigame" className="nav-link">Minijeux</Link>
-          <span className="nav-link">Profil</span>
-          
-          {user ? (
-            <button 
-              onClick={logout} 
-              className="btn-primary" 
-              style={{ backgroundColor: '#d32f2f' }}
-            >
-              Se déconnecter
-            </button>
-          ) : (
-            <Link to="/login" className="btn-primary">
-              Se connecter
-            </Link>
-          )}
-        </div>
-      </nav>
+      <Navbar />
 
       <div className={styles['game-content']}>
         <div className={styles['game-header']}>

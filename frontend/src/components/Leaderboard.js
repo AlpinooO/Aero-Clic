@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
 import scoreService from '../services/score.service';
+import Navbar from './Navbar';
 import styles from './Leaderboard.module.css';
-import './Navbar.css';
-import logoImage from '../images/aerologo.png';
-import { Link } from 'react-router-dom';
 
 function Leaderboard() {
   const { user, logout } = useAuth();
@@ -13,6 +11,7 @@ function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
   const [limit, setLimit] = useState(50);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -28,7 +27,18 @@ function Leaderboard() {
     };
 
     fetchLeaderboard();
-  }, [limit]);
+
+    // Auto-refresh every 5 seconds to catch new scores quickly
+    const interval = setInterval(() => {
+      setRefreshKey(prev => prev + 1);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [limit, refreshKey]);
+
+  const handleRefresh = () => {
+    setRefreshKey(prev => prev + 1);
+  };
 
   const handleLogout = async () => {
     await logout();
@@ -37,6 +47,7 @@ function Leaderboard() {
 
   return (
     <div className={styles['leaderboard-page']}>
+<<<<<<< HEAD
       <nav className="navbar">
         <div className="logo-container">
           <img src={logoImage} alt="AÉRO CLIC Logo" className="logo-image" />
@@ -63,6 +74,9 @@ function Leaderboard() {
           )}
         </div>
       </nav>
+=======
+      <Navbar />
+>>>>>>> 402ac7d69df11d96bdb9c0e7bf47e2d4319cea99
 
       <div className={styles['leaderboard-container']}>
         <h1 className={styles['title']}>🏆 Classement Général</h1>
@@ -78,6 +92,13 @@ function Leaderboard() {
               <option value={100}>Top 100</option>
             </select>
           </label>
+          <button 
+            onClick={handleRefresh} 
+            className={styles['refresh-button']}
+            disabled={loading}
+          >
+            🔄 Actualiser
+          </button>
         </div>
 
         {loading ? (

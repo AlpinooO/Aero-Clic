@@ -2,6 +2,41 @@ const express = require('express');
 const router = express.Router();
 const { getRedisClient } = require('../config/redis.config');
 
+/**
+ * @swagger
+ * /game/start:
+ *   post:
+ *     summary: Start a new game session
+ *     description: Initialize a new game session for the authenticated user with Redis caching
+ *     tags: [Game]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Game session started successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Game started
+ *                 session:
+ *                   $ref: '#/components/schemas/GameSession'
+ *       401:
+ *         description: User authentication required
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 // Start new game session
 router.post('/start', async (req, res) => {
   try {
@@ -36,6 +71,63 @@ router.post('/start', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /game/update:
+ *   post:
+ *     summary: Update game progress
+ *     description: Update the current game session with new level, score, or clicks
+ *     tags: [Game]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               level:
+ *                 type: integer
+ *                 example: 3
+ *               score:
+ *                 type: integer
+ *                 example: 1500
+ *               clicks:
+ *                 type: integer
+ *                 example: 45
+ *     responses:
+ *       200:
+ *         description: Game updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Game updated
+ *                 session:
+ *                   $ref: '#/components/schemas/GameSession'
+ *       401:
+ *         description: User authentication required
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       404:
+ *         description: No active game session found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       503:
+ *         description: Game service unavailable
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 // Update game progress
 router.post('/update', async (req, res) => {
   try {
@@ -74,6 +166,44 @@ router.post('/update', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /game/session:
+ *   get:
+ *     summary: Get current game session
+ *     description: Retrieve the active game session for the authenticated user from Redis
+ *     tags: [Game]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Game session retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 session:
+ *                   $ref: '#/components/schemas/GameSession'
+ *       401:
+ *         description: User authentication required
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       404:
+ *         description: No active game session found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       503:
+ *         description: Game service unavailable
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 // Get current game session
 router.get('/session', async (req, res) => {
   try {
@@ -102,6 +232,43 @@ router.get('/session', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /game/end:
+ *   post:
+ *     summary: End game session
+ *     description: Terminate the current game session and return final game state
+ *     tags: [Game]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Game session ended successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Game ended
+ *                 finalSession:
+ *                   allOf:
+ *                     - $ref: '#/components/schemas/GameSession'
+ *                     - nullable: true
+ *       401:
+ *         description: User authentication required
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 // End game session
 router.post('/end', async (req, res) => {
   try {
