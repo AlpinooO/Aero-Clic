@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
 import scoreService from '../services/score.service';
+import Navbar from './Navbar';
 import styles from './Leaderboard.module.css';
-import './Navbar.css';
-import logoImage from '../images/aerologo.png';
-import { Link } from 'react-router-dom';
 
 function Leaderboard() {
   const { user, logout } = useAuth();
@@ -49,32 +47,7 @@ function Leaderboard() {
 
   return (
     <div className={styles['leaderboard-page']}>
-      <nav className="navbar">
-        <div className="logo-container">
-          <img src={logoImage} alt="AÉRO CLIC Logo" className="logo-image" />
-        </div>
-        
-        <div className="nav-links">
-          <Link to="/" className="nav-link">Accueil</Link>
-          <Link to="/minigame" className="nav-link">Mini-jeux</Link>
-          <Link to="/leaderboard" className="nav-link">Classement</Link>
-          {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
-          
-          {user ? (
-            <button 
-              onClick={handleLogout} 
-              className="btn-primary" 
-              style={{ backgroundColor: '#d32f2f' }}
-            >
-              Se déconnecter
-            </button>
-          ) : (
-            <Link to="/login" className="btn-primary">
-              Se connecter
-            </Link>
-          )}
-        </div>
-      </nav>
+      <Navbar />
 
       <div className={styles['leaderboard-container']}>
         <h1 className={styles['title']}>🏆 Classement Général</h1>

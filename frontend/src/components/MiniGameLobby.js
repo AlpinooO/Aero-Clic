@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Navbar from './Navbar';
 import styles from './MiniGameLobby.module.css';
-import './Navbar.css';
 import beatpulseImage from '../images/beatpulse.jpeg';
 import griprushImage from '../images/griprush.jpeg';
 import clickstormImage from '../images/clickstorm.jpeg';
@@ -27,32 +27,7 @@ function MiniGameLobby() {
 
   return (
     <div className={styles.homeContainer}>
-      <nav className="navbar">
-        <div className="logo-container">
-          <img src={logoImage} alt="AÉRO CLIC Logo" className="logo-image" />
-        </div>
-        
-                <div className="nav-links">
-                  <Link to="/" className="nav-link">Accueil</Link>
-                  <Link to="/minigame" className="nav-link">Mini-jeux</Link>
-                  <Link to="/leaderboard" className="nav-link">Classement</Link>
-                  {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
-                  
-                  {user ? (
-                    <button 
-                      onClick={logout} 
-                      className="btn-primary" 
-                      style={{ backgroundColor: '#d32f2f' }}
-                    >
-                      Se déconnecter
-                    </button>
-                  ) : (
-                    <Link to="/login" className="btn-primary">
-                      Se connecter
-                    </Link>
-                  )}
-                </div>
-      </nav>
+      <Navbar />
 
       <div className={styles.heroSection}>
       </div>
