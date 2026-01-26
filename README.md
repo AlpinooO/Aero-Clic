@@ -279,8 +279,6 @@ POST   /api/game/end           - Terminer une session (authentifié)
 docker compose -f docker-compose.prod.yml up -d --build
 ```
 
-Accès sur http://localhost:80
-
 ## 🤝 Contribution
 
 1. Créer une branche feature
