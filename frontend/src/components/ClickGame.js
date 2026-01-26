@@ -114,7 +114,7 @@ function ClickGame() {
           <img src={logoImage} alt="AÉRO CLIC Logo" className="logo-image" />
         </div>
         
-        <div className="nav-links">
+<div className="nav-links">
           <Link to="/" className="nav-link">Accueil</Link>
           <span className="nav-link" onClick={handleAction}>S'entrainer</span>
           <Link to="/dashboard" className="nav-link">Dashboard</Link>
