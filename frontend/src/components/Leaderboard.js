@@ -47,36 +47,7 @@ function Leaderboard() {
 
   return (
     <div className={styles['leaderboard-page']}>
-<<<<<<< HEAD
-      <nav className="navbar">
-        <div className="logo-container">
-          <img src={logoImage} alt="AÉRO CLIC Logo" className="logo-image" />
-        </div>
-        
-        <div className="nav-links">
-          <Link to="/" className="nav-link">Accueil</Link>
-          <Link to="/minigame" className="nav-link">Mini-jeux</Link>
-          <Link to="/leaderboard" className="nav-link">Classement</Link>
-          {user && <Link to="/dashboard" className="nav-link">Dashboard</Link>}
-          
-          {user ? (
-            <button 
-              onClick={logout} 
-              className="btn-primary" 
-              style={{ backgroundColor: '#d32f2f' }}
-            >
-              Se déconnecter
-            </button>
-          ) : (
-            <Link to="/login" className="btn-primary">
-              Se connecter
-            </Link>
-          )}
-        </div>
-      </nav>
-=======
       <Navbar />
->>>>>>> 402ac7d69df11d96bdb9c0e7bf47e2d4319cea99
 
       <div className={styles['leaderboard-container']}>
         <h1 className={styles['title']}>🏆 Classement Général</h1>
