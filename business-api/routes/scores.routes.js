@@ -137,13 +137,14 @@ router.get('/personal-best', async (req, res) => {
     }
 
     const [result] = await db.query(
-      'SELECT MAX(score) as bestScore, COUNT(id) as gamesPlayed FROM scores WHERE user_id = ?',
+      'SELECT MAX(score) as bestScore, COUNT(id) as gamesPlayed, COALESCE(SUM(score), 0) as totalScore FROM scores WHERE user_id = ?',
       [userId]
     );
 
     res.json({
       bestScore: result[0].bestScore || 0,
-      gamesPlayed: result[0].gamesPlayed || 0
+      gamesPlayed: result[0].gamesPlayed || 0,
+      totalScore: Number(result[0].totalScore) || 0
     });
   } catch (error) {
     console.error('Get personal best error:', error);
